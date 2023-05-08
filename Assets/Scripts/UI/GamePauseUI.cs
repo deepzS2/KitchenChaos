@@ -1,51 +1,58 @@
+using KitchenChaos.Scripts.Core;
+using KitchenChaos.Scripts.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GamePauseUI : MonoBehaviour
+namespace KitchenChaos.Scripts.UI
 {
-    [SerializeField] private Button resumeButton;
-    [SerializeField] private Button mainMenuButton;
-    [SerializeField] private Button optionsButton;
-
-    private void Awake()
+    public class GamePauseUI : MonoBehaviour
     {
-        resumeButton.onClick.AddListener(() => {
-            GameManager.Instance.TogglePauseGame();
-        });
+        [SerializeField] private Button resumeButton;
+        [SerializeField] private Button mainMenuButton;
+        [SerializeField] private Button optionsButton;
 
-        mainMenuButton.onClick.AddListener(() =>
+        private void Awake()
         {
-            Loader.Load(Loader.Scene.MainMenuScene);
-        });
+            resumeButton.onClick.AddListener(() =>
+            {
+                GameManager.Instance.TogglePauseGame();
+            });
 
-        optionsButton.onClick.AddListener(() => {
+            mainMenuButton.onClick.AddListener(() =>
+            {
+                Loader.Load(Loader.Scene.MainMenuScene);
+            });
+
+            optionsButton.onClick.AddListener(() =>
+            {
+                Hide();
+                OptionsUI.Instance.Show(Show);
+            });
+        }
+
+        private void Start()
+        {
+            GameManager.Instance.OnGamePaused += GameManager_OnGamePaused;
+            GameManager.Instance.OnGameUnpaused += GameManager_OnGameUnpaused;
+
             Hide();
-            OptionsUI.Instance.Show(Show);
-        });
-    }
+        }
 
-    private void Start()
-    {
-        GameManager.Instance.OnGamePaused += GameManager_OnGamePaused;
-        GameManager.Instance.OnGameUnpaused += GameManager_OnGameUnpaused;
+        private void GameManager_OnGameUnpaused(object sender, System.EventArgs e)
+        {
+            Hide();
+        }
 
-        Hide();
-    }
+        private void GameManager_OnGamePaused(object sender, System.EventArgs e)
+        {
+            Show();
+        }
 
-    private void GameManager_OnGameUnpaused(object sender, System.EventArgs e)
-    {
-        Hide();
+        private void Show()
+        {
+            gameObject.SetActive(true);
+            resumeButton.Select();
+        }
+        private void Hide() => gameObject.SetActive(false);
     }
-
-    private void GameManager_OnGamePaused(object sender, System.EventArgs e)
-    {
-        Show();
-    }
-
-    private void Show()
-    {
-        gameObject.SetActive(true);
-        resumeButton.Select();
-    }
-    private void Hide() => gameObject.SetActive(false);
 }

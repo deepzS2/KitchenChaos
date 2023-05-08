@@ -1,40 +1,45 @@
+using KitchenChaos.Scripts.Core;
+using KitchenChaos.Scripts.ScriptableObjects;
 using UnityEngine;
 
-public class PlateIconsUI : MonoBehaviour
+namespace KitchenChaos.Scripts.UI
 {
-    [SerializeField] private PlateKitchenObject plateKitchenObject;
-    [SerializeField] private Transform iconTemplate;
-
-    private void Awake()
+    public class PlateIconsUI : MonoBehaviour
     {
-        iconTemplate.gameObject.SetActive(false);
-    }
+        [SerializeField] private PlateKitchenObject plateKitchenObject;
+        [SerializeField] private Transform iconTemplate;
 
-    private void Start()
-    {
-        plateKitchenObject.OnIngredientAdded += PlateKitchenObject_OnIngredientAdded;
-    }
-
-    private void PlateKitchenObject_OnIngredientAdded(object sender, PlateKitchenObject.OnIngredientAddedEventArgs e)
-    {
-        UpdateVisual();   
-    }
-
-    private void UpdateVisual()
-    {
-        foreach (Transform child in transform)
+        private void Awake()
         {
-            if (child == iconTemplate) continue;
-
-            Destroy(child.gameObject);
+            iconTemplate.gameObject.SetActive(false);
         }
 
-        foreach (KitchenObjectSO kitchenObjectSO in plateKitchenObject.GetKitchenObjectSOList())
+        private void Start()
         {
-            Transform iconTransform = Instantiate(iconTemplate, transform);
+            plateKitchenObject.OnIngredientAdded += PlateKitchenObject_OnIngredientAdded;
+        }
 
-            iconTransform.gameObject.SetActive(true);
-            iconTransform.GetComponent<PlateIconsSingleUI>().SetKitchenObjectSO(kitchenObjectSO);
+        private void PlateKitchenObject_OnIngredientAdded(object sender, PlateKitchenObject.OnIngredientAddedEventArgs e)
+        {
+            UpdateVisual();
+        }
+
+        private void UpdateVisual()
+        {
+            foreach (Transform child in transform)
+            {
+                if (child == iconTemplate) continue;
+
+                Destroy(child.gameObject);
+            }
+
+            foreach (KitchenObjectSO kitchenObjectSO in plateKitchenObject.GetKitchenObjectSOList())
+            {
+                Transform iconTransform = Instantiate(iconTemplate, transform);
+
+                iconTransform.gameObject.SetActive(true);
+                iconTransform.GetComponent<PlateIconsSingleUI>().SetKitchenObjectSO(kitchenObjectSO);
+            }
         }
     }
 }

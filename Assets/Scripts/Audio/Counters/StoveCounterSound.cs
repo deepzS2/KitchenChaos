@@ -1,58 +1,63 @@
+using KitchenChaos.Scripts.Core.Counters;
+using KitchenChaos.Scripts.Core.Interfaces;
 using UnityEngine;
 
-public class StoveCounterSound : MonoBehaviour
+namespace KitchenChaos.Scripts.Audio.Counters
 {
-    [SerializeField] private StoveCounter stoveCounter;
-
-    private AudioSource audioSource;
-    private float warningSoundTimer;
-    private bool playWarningSound;
-
-    private void Awake()
+    public class StoveCounterSound : MonoBehaviour
     {
-        audioSource = GetComponent<AudioSource>();
-    }
+        [SerializeField] private StoveCounter stoveCounter;
 
-    private void Start()
-    {
-        stoveCounter.OnStateChanged += StoveCounter_OnStateChanged;
-        stoveCounter.OnProgressChanged += StoveCounter_OnProgressChanged;
-    }
+        private AudioSource audioSource;
+        private float warningSoundTimer;
+        private bool playWarningSound;
 
-    private void StoveCounter_OnProgressChanged(object sender, IHasProgress.OnProgressChangedEventArgs e)
-    {
-        float burnShowProgressAmount = .5f;
-
-        playWarningSound = stoveCounter.IsFried() && e.progressNormalized >= burnShowProgressAmount;
-    }
-
-    private void StoveCounter_OnStateChanged(object sender, StoveCounter.OnStateChangedEventArgs e)
-    {
-        bool playSound = e.state == StoveCounter.State.Frying || e.state == StoveCounter.State.Fried;
-
-        if (playSound)
+        private void Awake()
         {
-            audioSource.Play();
-        } 
-        else
-        {
-            audioSource.Pause();
+            audioSource = GetComponent<AudioSource>();
         }
-    }
 
-    private void Update()
-    {
-        if (playWarningSound)
+        private void Start()
         {
-            warningSoundTimer -= Time.deltaTime;
+            stoveCounter.OnStateChanged += StoveCounter_OnStateChanged;
+            stoveCounter.OnProgressChanged += StoveCounter_OnProgressChanged;
+        }
 
-            if (warningSoundTimer <= 0f)
+        private void StoveCounter_OnProgressChanged(object sender, IHasProgress.OnProgressChangedEventArgs e)
+        {
+            float burnShowProgressAmount = .5f;
+
+            playWarningSound = stoveCounter.IsFried() && e.progressNormalized >= burnShowProgressAmount;
+        }
+
+        private void StoveCounter_OnStateChanged(object sender, StoveCounter.OnStateChangedEventArgs e)
+        {
+            bool playSound = e.state == StoveCounter.State.Frying || e.state == StoveCounter.State.Fried;
+
+            if (playSound)
             {
-                float warningSoundTimerMax = .2f;
+                audioSource.Play();
+            }
+            else
+            {
+                audioSource.Pause();
+            }
+        }
 
-                warningSoundTimer = warningSoundTimerMax;
+        private void Update()
+        {
+            if (playWarningSound)
+            {
+                warningSoundTimer -= Time.deltaTime;
 
-                SoundManager.Instance.PlayWarningSound(stoveCounter.transform.position);
+                if (warningSoundTimer <= 0f)
+                {
+                    float warningSoundTimerMax = .2f;
+
+                    warningSoundTimer = warningSoundTimerMax;
+
+                    SoundManager.Instance.PlayWarningSound(stoveCounter.transform.position);
+                }
             }
         }
     }

@@ -1,16 +1,19 @@
 using UnityEngine;
 
-public class LoaderCallback : MonoBehaviour
+namespace KitchenChaos.Scripts.Utils
 {
-    private bool isFirstUpdate = true;
-
-    private void Update()
+    public class LoaderCallback : MonoBehaviour
     {
-        if (isFirstUpdate)
-        {
-            isFirstUpdate = false;
+        private bool isFirstUpdate = true;
 
-            Loader.LoaderCallback();
+        private void Update()
+        {
+            if (isFirstUpdate)
+            {
+                isFirstUpdate = false;
+
+                Loader.LoaderCallback();
+            }
         }
     }
 }

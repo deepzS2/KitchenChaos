@@ -1,12 +1,16 @@
+using KitchenChaos.Scripts.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlateIconsSingleUI : MonoBehaviour
+namespace KitchenChaos.Scripts.UI
 {
-    [SerializeField] private Image image;
-
-    public void SetKitchenObjectSO(KitchenObjectSO kitchenObjectSO)
+    public class PlateIconsSingleUI : MonoBehaviour
     {
-        image.sprite = kitchenObjectSO.Sprite;
+        [SerializeField] private Image image;
+
+        public void SetKitchenObjectSO(KitchenObjectSO kitchenObjectSO)
+        {
+            image.sprite = kitchenObjectSO.Sprite;
+        }
     }
 }

@@ -1,56 +1,60 @@
+using KitchenChaos.Scripts.Core.Interfaces;
 using System;
 using UnityEngine;
 
-public class BaseCounter : MonoBehaviour, IKitchenObjectParent
+namespace KitchenChaos.Scripts.Core.Counters
 {
-    public static event EventHandler OnAnyObjectPlaced;
-
-    [SerializeField] private Transform counterTopPoint;
-
-    private KitchenObject kitchenObject;
-
-    public static void ResetStaticData()
+    public class BaseCounter : MonoBehaviour, IKitchenObjectParent
     {
-        OnAnyObjectPlaced = null;
-    }
+        public static event EventHandler OnAnyObjectPlaced;
 
-    public virtual void Interact(Player player)
-    {
-        Debug.LogError("BaseCounter.Interact();");
-    }
+        [SerializeField] private Transform counterTopPoint;
 
-    public virtual void InteractAlternate(Player player)
-    {
-        // Debug.LogError("BaseCounter.InteractAlternate();");
-    }
+        private KitchenObject kitchenObject;
 
-    public Transform GetKitchenObjectFollowTransform()
-    {
-        return counterTopPoint;
-    }
-
-    public void SetKitchenObject(KitchenObject kitchenObject)
-    {
-        this.kitchenObject = kitchenObject;
-
-        if (kitchenObject != null)
+        public static void ResetStaticData()
         {
-            OnAnyObjectPlaced?.Invoke(this, EventArgs.Empty);
+            OnAnyObjectPlaced = null;
         }
-    }
 
-    public KitchenObject GetKitchenObject()
-    {
-        return kitchenObject;
-    }
+        public virtual void Interact(Player player)
+        {
+            Debug.LogError("BaseCounter.Interact();");
+        }
 
-    public void ClearKitchenObject()
-    {
-        kitchenObject = null;
-    }
+        public virtual void InteractAlternate(Player player)
+        {
+            // Debug.LogError("BaseCounter.InteractAlternate();");
+        }
 
-    public bool HasKitchenObject()
-    {
-        return kitchenObject != null;
+        public Transform GetKitchenObjectFollowTransform()
+        {
+            return counterTopPoint;
+        }
+
+        public void SetKitchenObject(KitchenObject kitchenObject)
+        {
+            this.kitchenObject = kitchenObject;
+
+            if (kitchenObject != null)
+            {
+                OnAnyObjectPlaced?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public KitchenObject GetKitchenObject()
+        {
+            return kitchenObject;
+        }
+
+        public void ClearKitchenObject()
+        {
+            kitchenObject = null;
+        }
+
+        public bool HasKitchenObject()
+        {
+            return kitchenObject != null;
+        }
     }
 }

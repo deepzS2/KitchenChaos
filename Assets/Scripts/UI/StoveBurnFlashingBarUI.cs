@@ -1,31 +1,36 @@
+using KitchenChaos.Scripts.Core.Counters;
+using KitchenChaos.Scripts.Core.Interfaces;
 using UnityEngine;
 
-public class StoveBurnFlashingBarUI : MonoBehaviour
+namespace KitchenChaos.Scripts.UI
 {
-    private const string IS_FLASHING = "IsFlashing";
-
-    [SerializeField] private StoveCounter stoveCounter;
-
-    private Animator animator;
-
-    private void Awake()
+    public class StoveBurnFlashingBarUI : MonoBehaviour
     {
-        animator = GetComponent<Animator>();
-    }
+        private const string IS_FLASHING = "IsFlashing";
 
-    private void Start()
-    {
-        stoveCounter.OnProgressChanged += StoveCounter_OnProgressChanged;
+        [SerializeField] private StoveCounter stoveCounter;
 
-        animator.SetBool(IS_FLASHING, false);
-    }
+        private Animator animator;
 
-    private void StoveCounter_OnProgressChanged(object sender, IHasProgress.OnProgressChangedEventArgs e)
-    {
-        float burnShowProgressAmount = .5f;
+        private void Awake()
+        {
+            animator = GetComponent<Animator>();
+        }
 
-        bool show = stoveCounter.IsFried() && e.progressNormalized >= burnShowProgressAmount;
+        private void Start()
+        {
+            stoveCounter.OnProgressChanged += StoveCounter_OnProgressChanged;
 
-        animator.SetBool(IS_FLASHING, show);
+            animator.SetBool(IS_FLASHING, false);
+        }
+
+        private void StoveCounter_OnProgressChanged(object sender, IHasProgress.OnProgressChangedEventArgs e)
+        {
+            float burnShowProgressAmount = .5f;
+
+            bool show = stoveCounter.IsFried() && e.progressNormalized >= burnShowProgressAmount;
+
+            animator.SetBool(IS_FLASHING, show);
+        }
     }
 }

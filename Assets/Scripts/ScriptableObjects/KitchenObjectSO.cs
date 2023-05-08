@@ -1,9 +1,12 @@
 using UnityEngine;
 
-[CreateAssetMenu()]
-public class KitchenObjectSO : ScriptableObject
+namespace KitchenChaos.Scripts.ScriptableObjects
 {
-    public Transform Prefab;
-    public Sprite Sprite;
-    public string ObjectName;
+    [CreateAssetMenu()]
+    public class KitchenObjectSO : ScriptableObject
+    {
+        public Transform Prefab;
+        public Sprite Sprite;
+        public string ObjectName;
+    }
 }

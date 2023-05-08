@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class ResetStaticDataManager : MonoBehaviour
+namespace KitchenChaos.Scripts.Core.Counters
 {
-    private void Awake()
+    public class ResetStaticDataManager : MonoBehaviour
     {
-        CuttingCounter.ResetStaticData();
-        BaseCounter.ResetStaticData();
-        TrashCounter.ResetStaticData();
+        private void Awake()
+        {
+            CuttingCounter.ResetStaticData();
+            BaseCounter.ResetStaticData();
+            TrashCounter.ResetStaticData();
+        }
     }
 }

@@ -1,40 +1,45 @@
+using KitchenChaos.Scripts.Core;
+using KitchenChaos.Scripts.Core.Counters;
 using UnityEngine;
 
-public class SelectedCounterVisual : MonoBehaviour
+namespace KitchenChaos.Scripts.Visuals.Counters
 {
-    [SerializeField] private BaseCounter baseCounter;
-    [SerializeField] private GameObject[] visualGameObjectArray;
-
-    private void Start()
+    public class SelectedCounterVisual : MonoBehaviour
     {
-        Player.Instance.OnSelectedCounterChanged += Player_OnSelectedCounterChanged;   
-    }
+        [SerializeField] private BaseCounter baseCounter;
+        [SerializeField] private GameObject[] visualGameObjectArray;
 
-    private void Player_OnSelectedCounterChanged(object sender, Player.OnSelectedCounterChangedEventArgs e)
-    {
-        if (e.selectedCounter == baseCounter)
+        private void Start()
         {
-            Show();
+            Player.Instance.OnSelectedCounterChanged += Player_OnSelectedCounterChanged;
         }
-        else
-        {
-            Hide();
-        }
-    }
 
-    private void Show()
-    {
-        foreach (GameObject visualGameObject in visualGameObjectArray)
+        private void Player_OnSelectedCounterChanged(object sender, Player.OnSelectedCounterChangedEventArgs e)
         {
-            visualGameObject.SetActive(true);
+            if (e.selectedCounter == baseCounter)
+            {
+                Show();
+            }
+            else
+            {
+                Hide();
+            }
         }
-    }
 
-    private void Hide()
-    {
-        foreach (GameObject visualGameObject in visualGameObjectArray)
+        private void Show()
         {
-            visualGameObject.SetActive(false);
+            foreach (GameObject visualGameObject in visualGameObjectArray)
+            {
+                visualGameObject.SetActive(true);
+            }
+        }
+
+        private void Hide()
+        {
+            foreach (GameObject visualGameObject in visualGameObjectArray)
+            {
+                visualGameObject.SetActive(false);
+            }
         }
     }
 }

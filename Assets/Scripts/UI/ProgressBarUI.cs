@@ -1,49 +1,53 @@
+using KitchenChaos.Scripts.Core.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ProgressBarUI : MonoBehaviour
+namespace KitchenChaos.Scripts.UI
 {
-    [SerializeField] private GameObject hasProgressGameObject;
-    [SerializeField] private Image barImage;
-
-    private IHasProgress hasProgress;
-
-    private void Start()
+    public class ProgressBarUI : MonoBehaviour
     {
-        hasProgress = hasProgressGameObject.GetComponent<IHasProgress>();
+        [SerializeField] private GameObject hasProgressGameObject;
+        [SerializeField] private Image barImage;
 
-        if (hasProgress == null)
+        private IHasProgress hasProgress;
+
+        private void Start()
         {
-            Debug.LogError("Game Object " + hasProgressGameObject + " does not have a component that implements IHasProgress!");
-        }
+            hasProgress = hasProgressGameObject.GetComponent<IHasProgress>();
 
-        hasProgress.OnProgressChanged += HasProgress_OnProgressChanged;
-        barImage.fillAmount = 0f;
+            if (hasProgress == null)
+            {
+                Debug.LogError("Game Object " + hasProgressGameObject + " does not have a component that implements IHasProgress!");
+            }
 
-        Hide();
-    }
+            hasProgress.OnProgressChanged += HasProgress_OnProgressChanged;
+            barImage.fillAmount = 0f;
 
-    private void HasProgress_OnProgressChanged(object sender, IHasProgress.OnProgressChangedEventArgs e)
-    {
-        barImage.fillAmount = e.progressNormalized;
-
-        if (e.progressNormalized == 0f || e.progressNormalized == 1f)
-        {
             Hide();
         }
-        else
+
+        private void HasProgress_OnProgressChanged(object sender, IHasProgress.OnProgressChangedEventArgs e)
         {
-            Show();
+            barImage.fillAmount = e.progressNormalized;
+
+            if (e.progressNormalized == 0f || e.progressNormalized == 1f)
+            {
+                Hide();
+            }
+            else
+            {
+                Show();
+            }
         }
-    }
 
-    private void Show()
-    {
-        gameObject.SetActive(true);
-    }
+        private void Show()
+        {
+            gameObject.SetActive(true);
+        }
 
-    private void Hide()
-    {
-        gameObject.SetActive(false);
+        private void Hide()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

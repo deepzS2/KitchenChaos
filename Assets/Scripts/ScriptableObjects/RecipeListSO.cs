@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// [CreateAssetMenu()]
-public class RecipeListSO : ScriptableObject
+namespace KitchenChaos.Scripts.ScriptableObjects
 {
-    public List<RecipeSO> RecipeSOList;
+    // [CreateAssetMenu()]
+    public class RecipeListSO : ScriptableObject
+    {
+        public List<RecipeSO> RecipeSOList;
+    }
 }

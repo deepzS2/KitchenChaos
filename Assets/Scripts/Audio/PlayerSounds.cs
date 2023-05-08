@@ -1,30 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
+using KitchenChaos.Scripts.Core;
 using UnityEngine;
 
-public class PlayerSounds : MonoBehaviour
+namespace KitchenChaos.Scripts.Audio
 {
-    private Player player;
-    private float footstepTimer;
-    private float footstepTimerMax = .1f;
-
-    private void Awake()
+    public class PlayerSounds : MonoBehaviour
     {
-        player = GetComponent<Player>();
-    }
+        private Player player;
+        private float footstepTimer;
+        private float footstepTimerMax = .1f;
 
-    private void Update()
-    {
-        footstepTimer -= Time.deltaTime;
-
-        if (footstepTimer < 0f)
+        private void Awake()
         {
-            footstepTimer = footstepTimerMax;
+            player = GetComponent<Player>();
+        }
 
-            if (player.IsWalking())
+        private void Update()
+        {
+            footstepTimer -= Time.deltaTime;
+
+            if (footstepTimer < 0f)
             {
-                float volume = 1f;
-                SoundManager.Instance.PlayFootstepsSound(player.transform.position, volume);
+                footstepTimer = footstepTimerMax;
+
+                if (player.IsWalking())
+                {
+                    float volume = 1f;
+                    SoundManager.Instance.PlayFootstepsSound(player.transform.position, volume);
+                }
             }
         }
     }

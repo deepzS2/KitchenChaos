@@ -1,48 +1,52 @@
+using KitchenChaos.Scripts.ScriptableObjects;
 using System;
 using UnityEngine;
 
-public class PlatesCounter : BaseCounter
+namespace KitchenChaos.Scripts.Core.Counters
 {
-    public event EventHandler OnPlateSpawned;
-    public event EventHandler OnPlateRemoved;
-
-    [SerializeField] private KitchenObjectSO plateKitchenObjectSO;
-    [SerializeField] private float spawnPlateTimerMax = 4f;
-
-    private float spawnPlateTimer;
-    private int platesSpawnedAmount;
-    private int platesSpawnedAmountMax = 4;
-
-    private void Update()
+    public class PlatesCounter : BaseCounter
     {
-        spawnPlateTimer += Time.deltaTime;
+        public event EventHandler OnPlateSpawned;
+        public event EventHandler OnPlateRemoved;
 
-        if (spawnPlateTimer > spawnPlateTimerMax)
+        [SerializeField] private KitchenObjectSO plateKitchenObjectSO;
+        [SerializeField] private float spawnPlateTimerMax = 4f;
+
+        private float spawnPlateTimer;
+        private int platesSpawnedAmount;
+        private int platesSpawnedAmountMax = 4;
+
+        private void Update()
         {
-            spawnPlateTimer = 0f;
+            spawnPlateTimer += Time.deltaTime;
 
-            if (GameManager.Instance.IsGamePlaying() && platesSpawnedAmount < platesSpawnedAmountMax)
+            if (spawnPlateTimer > spawnPlateTimerMax)
             {
-                platesSpawnedAmount++;
+                spawnPlateTimer = 0f;
 
-                OnPlateSpawned?.Invoke(this, EventArgs.Empty);
+                if (GameManager.Instance.IsGamePlaying() && platesSpawnedAmount < platesSpawnedAmountMax)
+                {
+                    platesSpawnedAmount++;
+
+                    OnPlateSpawned?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
-    }
 
-    public override void Interact(Player player)
-    {
-        if (!player.HasKitchenObject())
+        public override void Interact(Player player)
         {
-            // Player is empty handed
-            if (platesSpawnedAmount > 0)
+            if (!player.HasKitchenObject())
             {
-                // There's at least one plate here
-                platesSpawnedAmount--;
+                // Player is empty handed
+                if (platesSpawnedAmount > 0)
+                {
+                    // There's at least one plate here
+                    platesSpawnedAmount--;
 
-                KitchenObject.SpawnKitchenObject(plateKitchenObjectSO, player);
+                    KitchenObject.SpawnKitchenObject(plateKitchenObjectSO, player);
 
-                OnPlateRemoved?.Invoke(this, EventArgs.Empty);
+                    OnPlateRemoved?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
     }

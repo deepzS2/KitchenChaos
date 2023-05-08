@@ -1,12 +1,16 @@
+using KitchenChaos.Scripts.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GamePlayingClockUI : MonoBehaviour
+namespace KitchenChaos.Scripts.UI
 {
-    [SerializeField] private Image timerImage;
-
-    private void Update()
+    public class GamePlayingClockUI : MonoBehaviour
     {
-        timerImage.fillAmount = GameManager.Instance.GetGamePlayingTimerNormalized();
+        [SerializeField] private Image timerImage;
+
+        private void Update()
+        {
+            timerImage.fillAmount = GameManager.Instance.GetGamePlayingTimerNormalized();
+        }
     }
 }

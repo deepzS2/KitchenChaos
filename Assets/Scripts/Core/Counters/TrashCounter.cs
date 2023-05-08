@@ -1,21 +1,24 @@
 using System;
 
-public class TrashCounter : BaseCounter
+namespace KitchenChaos.Scripts.Core.Counters
 {
-    public static event EventHandler OnAnyObjectTrashed;
-
-    new public static void ResetStaticData()
+    public class TrashCounter : BaseCounter
     {
-        OnAnyObjectTrashed = null;
-    }
+        public static event EventHandler OnAnyObjectTrashed;
 
-    public override void Interact(Player player)
-    {
-        if (player.HasKitchenObject())
+        new public static void ResetStaticData()
         {
-            player.GetKitchenObject().DestroySelf();
+            OnAnyObjectTrashed = null;
+        }
 
-            OnAnyObjectTrashed?.Invoke(this, EventArgs.Empty);
+        public override void Interact(Player player)
+        {
+            if (player.HasKitchenObject())
+            {
+                player.GetKitchenObject().DestroySelf();
+
+                OnAnyObjectTrashed?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 }

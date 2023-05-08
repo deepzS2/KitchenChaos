@@ -1,52 +1,56 @@
+using KitchenChaos.Scripts.Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DeliveryResultUI : MonoBehaviour
+namespace KitchenChaos.Scripts.UI
 {
-    private const string POPUP = "Popup";
-
-    [SerializeField] private Image backgroundImage;
-    [SerializeField] private Image iconImage;
-    [SerializeField] private TextMeshProUGUI messageText;
-
-    [SerializeField] private Color successColor;
-    [SerializeField] private Color failedColor;
-    [SerializeField] private Sprite successSprite;
-    [SerializeField] private Sprite failedSprite;
-
-    private Animator animator;
-
-    private void Awake()
+    public class DeliveryResultUI : MonoBehaviour
     {
-        animator = GetComponent<Animator>();
-    }
+        private const string POPUP = "Popup";
 
-    private void Start()
-    {
-        DeliveryManager.Instance.OnRecipeSuccess += DeliveryManager_OnRecipeSuccess;
-        DeliveryManager.Instance.OnRecipeFailed += DeliveryManager_OnRecipeFailed;
+        [SerializeField] private Image backgroundImage;
+        [SerializeField] private Image iconImage;
+        [SerializeField] private TextMeshProUGUI messageText;
 
-        gameObject.SetActive(false);
-    }
+        [SerializeField] private Color successColor;
+        [SerializeField] private Color failedColor;
+        [SerializeField] private Sprite successSprite;
+        [SerializeField] private Sprite failedSprite;
 
-    private void DeliveryManager_OnRecipeFailed(object sender, System.EventArgs e)
-    {
-        gameObject.SetActive(true);
-        animator.SetTrigger(POPUP);
+        private Animator animator;
 
-        backgroundImage.color = failedColor;
-        iconImage.sprite = failedSprite;
-        messageText.text = "DELIVERY\nFAILED";
-    }
+        private void Awake()
+        {
+            animator = GetComponent<Animator>();
+        }
 
-    private void DeliveryManager_OnRecipeSuccess(object sender, System.EventArgs e)
-    {
-        gameObject.SetActive(true);
-        animator.SetTrigger(POPUP);
+        private void Start()
+        {
+            DeliveryManager.Instance.OnRecipeSuccess += DeliveryManager_OnRecipeSuccess;
+            DeliveryManager.Instance.OnRecipeFailed += DeliveryManager_OnRecipeFailed;
 
-        backgroundImage.color = successColor;
-        iconImage.sprite = successSprite;
-        messageText.text = "DELIVERY\nSUCCESS";
+            gameObject.SetActive(false);
+        }
+
+        private void DeliveryManager_OnRecipeFailed(object sender, System.EventArgs e)
+        {
+            gameObject.SetActive(true);
+            animator.SetTrigger(POPUP);
+
+            backgroundImage.color = failedColor;
+            iconImage.sprite = failedSprite;
+            messageText.text = "DELIVERY\nFAILED";
+        }
+
+        private void DeliveryManager_OnRecipeSuccess(object sender, System.EventArgs e)
+        {
+            gameObject.SetActive(true);
+            animator.SetTrigger(POPUP);
+
+            backgroundImage.color = successColor;
+            iconImage.sprite = successSprite;
+            messageText.text = "DELIVERY\nSUCCESS";
+        }
     }
 }

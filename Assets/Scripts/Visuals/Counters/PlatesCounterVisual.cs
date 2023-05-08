@@ -1,41 +1,45 @@
+using KitchenChaos.Scripts.Core.Counters;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlatesCounterVisual : MonoBehaviour
+namespace KitchenChaos.Scripts.Visuals.Counters
 {
-    [SerializeField] private PlatesCounter platesCounter;
-    [SerializeField] private Transform counterTopPoint;
-    [SerializeField] private Transform plateVisualPrefab;
-
-    private List<GameObject> plateVisualGameObjectList;
-
-    private void Awake()
+    public class PlatesCounterVisual : MonoBehaviour
     {
-        plateVisualGameObjectList = new List<GameObject>();
-    }
+        [SerializeField] private PlatesCounter platesCounter;
+        [SerializeField] private Transform counterTopPoint;
+        [SerializeField] private Transform plateVisualPrefab;
 
-    private void Start()
-    {
-        platesCounter.OnPlateSpawned += PlatesCounter_OnPlateSpawned;
-        platesCounter.OnPlateRemoved += PlatesCounter_OnPlateRemoved;
-    }
+        private List<GameObject> plateVisualGameObjectList;
 
-    private void PlatesCounter_OnPlateRemoved(object sender, System.EventArgs e)
-    {
-        GameObject plateGameObject = plateVisualGameObjectList[plateVisualGameObjectList.Count - 1];
+        private void Awake()
+        {
+            plateVisualGameObjectList = new List<GameObject>();
+        }
 
-        plateVisualGameObjectList.Remove(plateGameObject);
+        private void Start()
+        {
+            platesCounter.OnPlateSpawned += PlatesCounter_OnPlateSpawned;
+            platesCounter.OnPlateRemoved += PlatesCounter_OnPlateRemoved;
+        }
 
-        Destroy(plateGameObject);
-    }
+        private void PlatesCounter_OnPlateRemoved(object sender, System.EventArgs e)
+        {
+            GameObject plateGameObject = plateVisualGameObjectList[plateVisualGameObjectList.Count - 1];
 
-    private void PlatesCounter_OnPlateSpawned(object sender, System.EventArgs e)
-    {
-        Transform plateVisualTransform = Instantiate(plateVisualPrefab, counterTopPoint);
+            plateVisualGameObjectList.Remove(plateGameObject);
 
-        float plateOffsetY = .1f;
-        plateVisualTransform.localPosition = new Vector3(0, plateOffsetY * plateVisualGameObjectList.Count, 0);
+            Destroy(plateGameObject);
+        }
 
-        plateVisualGameObjectList.Add(plateVisualTransform.gameObject);
+        private void PlatesCounter_OnPlateSpawned(object sender, System.EventArgs e)
+        {
+            Transform plateVisualTransform = Instantiate(plateVisualPrefab, counterTopPoint);
+
+            float plateOffsetY = .1f;
+            plateVisualTransform.localPosition = new Vector3(0, plateOffsetY * plateVisualGameObjectList.Count, 0);
+
+            plateVisualGameObjectList.Add(plateVisualTransform.gameObject);
+        }
     }
 }

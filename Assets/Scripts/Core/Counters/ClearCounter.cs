@@ -1,49 +1,52 @@
-public class ClearCounter : BaseCounter
+namespace KitchenChaos.Scripts.Core.Counters
 {
-    public override void Interact(Player player)
+    public class ClearCounter : BaseCounter
     {
-        if (!HasKitchenObject())
+        public override void Interact(Player player)
         {
-            // There is NO KitchenObject here
-            if (player.HasKitchenObject())
+            if (!HasKitchenObject())
             {
-                // Player is carrying something
-                player.GetKitchenObject().SetKitchenObjectParent(this);
-            }
-        } 
-        else
-        {
-            // There is a KitchenObject here
-            if (player.HasKitchenObject())
-            {
-                PlateKitchenObject plateKitchenObject;
-
-                // Player is carrying something
-                if (player.GetKitchenObject().TryGetPlate(out plateKitchenObject))
+                // There is NO KitchenObject here
+                if (player.HasKitchenObject())
                 {
-                    // Player is holding a Plate
-
-                    if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
-                    {
-                        GetKitchenObject().DestroySelf();
-                    }
-                }
-                else
-                {
-                    // Player is NOT holding a Plate
-                    if (GetKitchenObject().TryGetPlate(out plateKitchenObject))
-                    {
-                        if (plateKitchenObject.TryAddIngredient(player.GetKitchenObject().GetKitchenObjectSO()))
-                        {
-                            player.GetKitchenObject().DestroySelf();
-                        }
-                    }
+                    // Player is carrying something
+                    player.GetKitchenObject().SetKitchenObjectParent(this);
                 }
             }
             else
             {
-                // Player is NOT carrying something
-                GetKitchenObject().SetKitchenObjectParent(player);
+                // There is a KitchenObject here
+                if (player.HasKitchenObject())
+                {
+                    PlateKitchenObject plateKitchenObject;
+
+                    // Player is carrying something
+                    if (player.GetKitchenObject().TryGetPlate(out plateKitchenObject))
+                    {
+                        // Player is holding a Plate
+
+                        if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
+                        {
+                            GetKitchenObject().DestroySelf();
+                        }
+                    }
+                    else
+                    {
+                        // Player is NOT holding a Plate
+                        if (GetKitchenObject().TryGetPlate(out plateKitchenObject))
+                        {
+                            if (plateKitchenObject.TryAddIngredient(player.GetKitchenObject().GetKitchenObjectSO()))
+                            {
+                                player.GetKitchenObject().DestroySelf();
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // Player is NOT carrying something
+                    GetKitchenObject().SetKitchenObjectParent(player);
+                }
             }
         }
     }

@@ -1,37 +1,40 @@
 using UnityEngine;
 
-public class LookAtCamera : MonoBehaviour
+namespace KitchenChaos.Scripts.Utils
 {
-    private enum Mode
+    public class LookAtCamera : MonoBehaviour
     {
-        LookAt,
-        LookAtInverted,
-        CameraFoward,
-        CameraFowardInverted,
-    }
-
-    [SerializeField] private Mode mode;
-
-    private void LateUpdate()
-    {
-        switch (mode)
+        private enum Mode
         {
-            case Mode.LookAt:
-                transform.LookAt(Camera.main.transform);
-                break;
+            LookAt,
+            LookAtInverted,
+            CameraFoward,
+            CameraFowardInverted,
+        }
 
-            case Mode.LookAtInverted:
-                Vector3 dirFromCamera = transform.position - Camera.main.transform.position;
-                transform.LookAt(transform.position + dirFromCamera);
-                break;
+        [SerializeField] private Mode mode;
 
-            case Mode.CameraFoward:
-                transform.forward = Camera.main.transform.forward;
-                break;
+        private void LateUpdate()
+        {
+            switch (mode)
+            {
+                case Mode.LookAt:
+                    transform.LookAt(Camera.main.transform);
+                    break;
 
-            case Mode.CameraFowardInverted:
-                transform.forward = -Camera.main.transform.forward;
-                break;
+                case Mode.LookAtInverted:
+                    Vector3 dirFromCamera = transform.position - Camera.main.transform.position;
+                    transform.LookAt(transform.position + dirFromCamera);
+                    break;
+
+                case Mode.CameraFoward:
+                    transform.forward = Camera.main.transform.forward;
+                    break;
+
+                case Mode.CameraFowardInverted:
+                    transform.forward = -Camera.main.transform.forward;
+                    break;
+            }
         }
     }
 }

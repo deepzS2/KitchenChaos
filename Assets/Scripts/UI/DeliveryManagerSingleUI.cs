@@ -1,35 +1,39 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using KitchenChaos.Scripts.ScriptableObjects;
 
-public class DeliveryManagerSingleUI : MonoBehaviour
+namespace KitchenChaos.Scripts.UI
 {
-    [SerializeField] private TextMeshProUGUI recipeNameText;
-    [SerializeField] private Transform iconContainer;
-    [SerializeField] private Transform iconTemplate;
-
-    private void Awake()
+    public class DeliveryManagerSingleUI : MonoBehaviour
     {
-        iconTemplate.gameObject.SetActive(false);
-    }
+        [SerializeField] private TextMeshProUGUI recipeNameText;
+        [SerializeField] private Transform iconContainer;
+        [SerializeField] private Transform iconTemplate;
 
-    public void SetRecipeSO(RecipeSO recipeSO)
-    {
-        recipeNameText.text = recipeSO.RecipeName;
-
-        foreach (Transform child in iconContainer)
+        private void Awake()
         {
-            if (child == iconTemplate) continue;
-
-            Destroy(child.gameObject);
+            iconTemplate.gameObject.SetActive(false);
         }
 
-        foreach (KitchenObjectSO kitchenObjectSO in recipeSO.KitchenObjectSOList)
+        public void SetRecipeSO(RecipeSO recipeSO)
         {
-            Transform iconTransform = Instantiate(iconTemplate, iconContainer);
+            recipeNameText.text = recipeSO.RecipeName;
 
-            iconTransform.gameObject.SetActive(true);
-            iconTransform.GetComponent<Image>().sprite = kitchenObjectSO.Sprite;
+            foreach (Transform child in iconContainer)
+            {
+                if (child == iconTemplate) continue;
+
+                Destroy(child.gameObject);
+            }
+
+            foreach (KitchenObjectSO kitchenObjectSO in recipeSO.KitchenObjectSOList)
+            {
+                Transform iconTransform = Instantiate(iconTemplate, iconContainer);
+
+                iconTransform.gameObject.SetActive(true);
+                iconTransform.GetComponent<Image>().sprite = kitchenObjectSO.Sprite;
+            }
         }
     }
 }

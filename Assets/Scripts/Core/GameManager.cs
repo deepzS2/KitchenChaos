@@ -1,110 +1,113 @@
 using System;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace KitchenChaos.Scripts.Core
 {
-    public static GameManager Instance { get; private set; }
-
-    public event EventHandler OnStateChanged;
-    public event EventHandler OnGamePaused;
-    public event EventHandler OnGameUnpaused;
-
-    private enum State
+    public class GameManager : MonoBehaviour
     {
-        WaitingToStart,
-        CountdownToStart,
-        GamePlaying,
-        GameOver
-    }
+        public static GameManager Instance { get; private set; }
 
-    private State state;
-    private float countdownToStartTimer = 3f;
-    private float gamePlayingTimer;
-    private float gamePlayingTimerMax = 10f * 60f; // 60 minutes
-    private bool isGamePaused = false;
+        public event EventHandler OnStateChanged;
+        public event EventHandler OnGamePaused;
+        public event EventHandler OnGameUnpaused;
 
-    private void Awake()
-    {
-        Instance = this;
-
-        state = State.WaitingToStart;
-    }
-
-    private void Start()
-    {
-        GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
-        GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
-    }
-
-    private void GameInput_OnInteractAction(object sender, EventArgs e)
-    {
-        if (state == State.WaitingToStart)
+        private enum State
         {
-            state = State.CountdownToStart;
-            OnStateChanged?.Invoke(this, EventArgs.Empty);
+            WaitingToStart,
+            CountdownToStart,
+            GamePlaying,
+            GameOver
         }
-    }
 
-    private void GameInput_OnPauseAction(object sender, EventArgs e)
-    {
-        TogglePauseGame();
-    }
+        private State state;
+        private float countdownToStartTimer = 3f;
+        private float gamePlayingTimer;
+        private float gamePlayingTimerMax = 10f * 60f; // 60 minutes
+        private bool isGamePaused = false;
 
-    private void Update()
-    {
-        switch (state)
+        private void Awake()
         {
-            case State.WaitingToStart:
-                break;
+            Instance = this;
 
-            case State.CountdownToStart:
-                countdownToStartTimer -= Time.deltaTime;
-
-                if (countdownToStartTimer < 0f)
-                {
-                    state = State.GamePlaying;
-                    gamePlayingTimer = gamePlayingTimerMax;
-
-                    OnStateChanged?.Invoke(this, EventArgs.Empty);
-                }
-
-                break;
-
-            case State.GamePlaying:
-                gamePlayingTimer -= Time.deltaTime;
-
-                if (gamePlayingTimer < 0f)
-                {
-                    state = State.GameOver;
-                    OnStateChanged?.Invoke(this, EventArgs.Empty);
-                }
-
-                break;
-
-            case State.GameOver:
-                break;
+            state = State.WaitingToStart;
         }
-    }
 
-    public bool IsGamePlaying() => state == State.GamePlaying;
-    public bool IsCountdownToStartActive() => state == State.CountdownToStart;
-    public bool IsGameOver() => state == State.GameOver;
-    public float GetCountdownStartTimer() => countdownToStartTimer;
-    public float GetGamePlayingTimerNormalized() => 1 - (gamePlayingTimer / gamePlayingTimerMax);
-
-    public void TogglePauseGame()
-    {
-        isGamePaused = !isGamePaused;
-
-        if (isGamePaused)
+        private void Start()
         {
-            Time.timeScale = 0f;
-            OnGamePaused?.Invoke(this, EventArgs.Empty);
+            GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
+            GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
         }
-        else
+
+        private void GameInput_OnInteractAction(object sender, EventArgs e)
         {
-            Time.timeScale = 1f;
-            OnGameUnpaused?.Invoke(this, EventArgs.Empty);
+            if (state == State.WaitingToStart)
+            {
+                state = State.CountdownToStart;
+                OnStateChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private void GameInput_OnPauseAction(object sender, EventArgs e)
+        {
+            TogglePauseGame();
+        }
+
+        private void Update()
+        {
+            switch (state)
+            {
+                case State.WaitingToStart:
+                    break;
+
+                case State.CountdownToStart:
+                    countdownToStartTimer -= Time.deltaTime;
+
+                    if (countdownToStartTimer < 0f)
+                    {
+                        state = State.GamePlaying;
+                        gamePlayingTimer = gamePlayingTimerMax;
+
+                        OnStateChanged?.Invoke(this, EventArgs.Empty);
+                    }
+
+                    break;
+
+                case State.GamePlaying:
+                    gamePlayingTimer -= Time.deltaTime;
+
+                    if (gamePlayingTimer < 0f)
+                    {
+                        state = State.GameOver;
+                        OnStateChanged?.Invoke(this, EventArgs.Empty);
+                    }
+
+                    break;
+
+                case State.GameOver:
+                    break;
+            }
+        }
+
+        public bool IsGamePlaying() => state == State.GamePlaying;
+        public bool IsCountdownToStartActive() => state == State.CountdownToStart;
+        public bool IsGameOver() => state == State.GameOver;
+        public float GetCountdownStartTimer() => countdownToStartTimer;
+        public float GetGamePlayingTimerNormalized() => 1 - (gamePlayingTimer / gamePlayingTimerMax);
+
+        public void TogglePauseGame()
+        {
+            isGamePaused = !isGamePaused;
+
+            if (isGamePaused)
+            {
+                Time.timeScale = 0f;
+                OnGamePaused?.Invoke(this, EventArgs.Empty);
+            }
+            else
+            {
+                Time.timeScale = 1f;
+                OnGameUnpaused?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 }

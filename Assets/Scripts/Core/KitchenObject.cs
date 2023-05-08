@@ -1,70 +1,75 @@
+using KitchenChaos.Scripts.Core.Interfaces;
+using KitchenChaos.Scripts.ScriptableObjects;
 using UnityEngine;
 
-public class KitchenObject : MonoBehaviour
+namespace KitchenChaos.Scripts.Core
 {
-    [SerializeField] private KitchenObjectSO kitchenObjectSO;
-
-    private IKitchenObjectParent kitchenObjectParent;
-
-    public KitchenObjectSO GetKitchenObjectSO()
+    public class KitchenObject : MonoBehaviour
     {
-        return kitchenObjectSO;
-    }
+        [SerializeField] private KitchenObjectSO kitchenObjectSO;
 
-    public void SetKitchenObjectParent(IKitchenObjectParent kitchenObjectParent)
-    {
-        if (this.kitchenObjectParent != null)
+        private IKitchenObjectParent kitchenObjectParent;
+
+        public KitchenObjectSO GetKitchenObjectSO()
         {
-            this.kitchenObjectParent.ClearKitchenObject();
+            return kitchenObjectSO;
         }
 
-        this.kitchenObjectParent = kitchenObjectParent;
-
-        if (kitchenObjectParent.HasKitchenObject())
+        public void SetKitchenObjectParent(IKitchenObjectParent kitchenObjectParent)
         {
-            Debug.LogError("IKitchenObjectParent already has a KitchenObject!");
+            if (this.kitchenObjectParent != null)
+            {
+                this.kitchenObjectParent.ClearKitchenObject();
+            }
+
+            this.kitchenObjectParent = kitchenObjectParent;
+
+            if (kitchenObjectParent.HasKitchenObject())
+            {
+                Debug.LogError("IKitchenObjectParent already has a KitchenObject!");
+            }
+
+            this.kitchenObjectParent = kitchenObjectParent;
+            kitchenObjectParent.SetKitchenObject(this);
+
+            transform.parent = kitchenObjectParent.GetKitchenObjectFollowTransform();
+            transform.localPosition = Vector3.zero;
         }
 
-        this.kitchenObjectParent = kitchenObjectParent;
-        kitchenObjectParent.SetKitchenObject(this);
-
-        transform.parent = kitchenObjectParent.GetKitchenObjectFollowTransform();
-        transform.localPosition = Vector3.zero;
-    }
-
-    public IKitchenObjectParent GetKitchenObjectParent()
-    {
-        return kitchenObjectParent;
-    }
-
-    public void DestroySelf()
-    {
-        kitchenObjectParent.ClearKitchenObject();
-
-        Destroy(gameObject);
-    }
-
-    public bool TryGetPlate(out PlateKitchenObject plateKitchenObject)
-    {
-        if (this is PlateKitchenObject)
+        public IKitchenObjectParent GetKitchenObjectParent()
         {
-            plateKitchenObject = this as PlateKitchenObject;
-
-            return true;
+            return kitchenObjectParent;
         }
 
-        plateKitchenObject = null;
+        public void DestroySelf()
+        {
+            kitchenObjectParent.ClearKitchenObject();
 
-        return false;
-    }
+            Destroy(gameObject);
+        }
 
-    public static KitchenObject SpawnKitchenObject(KitchenObjectSO kitchenObjectSO, IKitchenObjectParent kitchenObjectParent)
-    {
-        Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.Prefab);
-        KitchenObject kitchenObject = kitchenObjectTransform.GetComponent<KitchenObject>();
+        public bool TryGetPlate(out PlateKitchenObject plateKitchenObject)
+        {
+            if (this is PlateKitchenObject)
+            {
+                plateKitchenObject = this as PlateKitchenObject;
 
-        kitchenObject.SetKitchenObjectParent(kitchenObjectParent);
+                return true;
+            }
 
-        return kitchenObject;
+            plateKitchenObject = null;
+
+            return false;
+        }
+
+        public static KitchenObject SpawnKitchenObject(KitchenObjectSO kitchenObjectSO, IKitchenObjectParent kitchenObjectParent)
+        {
+            Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.Prefab);
+            KitchenObject kitchenObject = kitchenObjectTransform.GetComponent<KitchenObject>();
+
+            kitchenObject.SetKitchenObjectParent(kitchenObjectParent);
+
+            return kitchenObject;
+        }
     }
 }

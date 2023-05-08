@@ -1,43 +1,48 @@
+using KitchenChaos.Scripts.ScriptableObjects;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlateKitchenObject : KitchenObject
+namespace KitchenChaos.Scripts.Core
 {
-    public event EventHandler<OnIngredientAddedEventArgs> OnIngredientAdded;
-
-    public class OnIngredientAddedEventArgs : EventArgs {
-        public KitchenObjectSO kitchenObjectSO;
-    }
-
-    [SerializeField] private List<KitchenObjectSO> validKitchenObjectSOList;
-
-    private List<KitchenObjectSO> kitchenObjectSOList;
-
-    private void Awake()
+    public class PlateKitchenObject : KitchenObject
     {
-        kitchenObjectSOList = new List<KitchenObjectSO>();
-    }
+        public event EventHandler<OnIngredientAddedEventArgs> OnIngredientAdded;
 
-    public bool TryAddIngredient(KitchenObjectSO kitchenObjectSO)
-    {
-        if (kitchenObjectSOList.Contains(kitchenObjectSO) || !validKitchenObjectSOList.Contains(kitchenObjectSO))
+        public class OnIngredientAddedEventArgs : EventArgs
         {
-            return false;
+            public KitchenObjectSO kitchenObjectSO;
         }
 
-        kitchenObjectSOList.Add(kitchenObjectSO);
+        [SerializeField] private List<KitchenObjectSO> validKitchenObjectSOList;
 
-        OnIngredientAdded?.Invoke(this, new OnIngredientAddedEventArgs
+        private List<KitchenObjectSO> kitchenObjectSOList;
+
+        private void Awake()
         {
-            kitchenObjectSO = kitchenObjectSO
-        });
+            kitchenObjectSOList = new List<KitchenObjectSO>();
+        }
 
-        return true;
-    }
+        public bool TryAddIngredient(KitchenObjectSO kitchenObjectSO)
+        {
+            if (kitchenObjectSOList.Contains(kitchenObjectSO) || !validKitchenObjectSOList.Contains(kitchenObjectSO))
+            {
+                return false;
+            }
 
-    public List<KitchenObjectSO> GetKitchenObjectSOList()
-    {
-        return kitchenObjectSOList;
+            kitchenObjectSOList.Add(kitchenObjectSO);
+
+            OnIngredientAdded?.Invoke(this, new OnIngredientAddedEventArgs
+            {
+                kitchenObjectSO = kitchenObjectSO
+            });
+
+            return true;
+        }
+
+        public List<KitchenObjectSO> GetKitchenObjectSOList()
+        {
+            return kitchenObjectSOList;
+        }
     }
 }

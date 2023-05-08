@@ -1,20 +1,24 @@
+using KitchenChaos.Scripts.ScriptableObjects;
 using System;
 using UnityEngine;
 
-public class ContainerCounter : BaseCounter
+namespace KitchenChaos.Scripts.Core.Counters
 {
-    public event EventHandler OnPlayerGrabbedObject;
-
-    [SerializeField] private KitchenObjectSO kitchenObjectSO;
-
-    public override void Interact(Player player)
+    public class ContainerCounter : BaseCounter
     {
-        if (!player.HasKitchenObject())
-        {
-            // Player is NOT carrying anything
-            KitchenObject.SpawnKitchenObject(kitchenObjectSO, player);
+        public event EventHandler OnPlayerGrabbedObject;
 
-            OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
+        [SerializeField] private KitchenObjectSO kitchenObjectSO;
+
+        public override void Interact(Player player)
+        {
+            if (!player.HasKitchenObject())
+            {
+                // Player is NOT carrying anything
+                KitchenObject.SpawnKitchenObject(kitchenObjectSO, player);
+
+                OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 }
