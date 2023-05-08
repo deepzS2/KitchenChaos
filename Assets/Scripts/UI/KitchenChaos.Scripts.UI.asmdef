@@ -1,0 +1,20 @@
+{
+    "name": "KitchenChaos.Scripts.UI",
+    "rootNamespace": "KitchenChaos.Scripts.UI",
+    "references": [
+        "GUID:8a2c2d2870a5d634a8441b23b9b0e3c1",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:36e17b947d119b541815f43f3dd286c3",
+        "GUID:d0ba70f65014ec443b17d94a49322b24",
+        "GUID:fd744e500e27bd549987cb30a396a402"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

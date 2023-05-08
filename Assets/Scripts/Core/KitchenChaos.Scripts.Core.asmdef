@@ -1,0 +1,17 @@
+{
+    "name": "KitchenChaos.Scripts.Core",
+    "rootNamespace": "KitchenChaos.Scripts.Core",
+    "references": [
+        "GUID:36e17b947d119b541815f43f3dd286c3",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

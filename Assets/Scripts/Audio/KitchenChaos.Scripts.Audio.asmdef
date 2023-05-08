@@ -1,0 +1,17 @@
+{
+    "name": "KitchenChaos.Scripts.Audio",
+    "rootNamespace": "KitchenChaos.Scripts.Audio",
+    "references": [
+        "GUID:8a2c2d2870a5d634a8441b23b9b0e3c1",
+        "GUID:36e17b947d119b541815f43f3dd286c3"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
